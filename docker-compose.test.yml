@@ -1,0 +1,7 @@
+version: '3.4'
+services:
+  app:
+    env_file: 
+      - .env.test
+    ports:
+      - '9090:9090'

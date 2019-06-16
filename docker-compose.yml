@@ -1,0 +1,21 @@
+version: '3.4'
+services:
+  postgres:
+    image: postgres:11.3
+    volumes: 
+      - 'pg_data:/var/lib/postgresql/data'
+    ports:
+      - '5432:5432'
+  
+  app:
+    build:
+      context: ./
+    env_file: 
+      - .env.example
+    ports:
+      - '9090:9090'
+    depends_on:
+      - postgres
+  
+volumes:
+  pg_data:
