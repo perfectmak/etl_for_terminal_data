@@ -9,7 +9,7 @@ RUN npm install
 
 COPY sample_data/ sample_data/
 COPY src/ src/
-COPY tests/ tests/
+COPY test/ test/
 
 EXPOSE 9090
 

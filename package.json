@@ -11,8 +11,8 @@
     "start:server": "IMPORTER=off node src/app.js",
     "start:importer": "GRAPHQL_API=off node src/app.js",
     "test": "npm run test:unit && npm run test:integration",
-    "test:integration": "NODE_ENV=test ./node_modules/.bin/mocha tests/integration/**/*.test.js",
-    "test:unit": "NODE_ENV=test ./node_modules/.bin/mocha tests/unit/**/*.test.js"
+    "test:integration": "NODE_ENV=test ./node_modules/.bin/mocha test/integration/**/*.test.js",
+    "test:unit": "NODE_ENV=test ./node_modules/.bin/mocha test/unit/**/*.test.js"
   },
   "keywords": [],
   "author": "",
