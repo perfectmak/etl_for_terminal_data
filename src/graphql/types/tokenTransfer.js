@@ -10,6 +10,7 @@ const schema = gql`
     token: Token!
     fromAddress: String!
     toAddress: String!
+    value: String!
     logIndex: String
     blockTimestamp: String
     blockNumber: String

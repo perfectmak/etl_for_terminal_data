@@ -18,8 +18,8 @@ const daos = {
 
 /// SETUP SEQUELIZE RELATIONSHIPS
 // tokens == has many ==> tokenTransfers
-daos.tokensDao.Transfers = daos.tokenTransfersDao.hasMany(daos.tokensDao);
-daos.tokenTransfersDao.Token = daos.tokensDao.belongsTo(daos.tokenTransfersDao);
+// daos.tokensDao.Transfers = daos.tokenTransfersDao.hasMany(daos.tokensDao);
+// daos.tokenTransfersDao.Token = daos.tokensDao.belongsTo(daos.tokenTransfersDao);
 /// END SETUP SEQUELIZE RELATIONSHIPS
 
 // is set to true only if sync() is manually called
@@ -33,6 +33,13 @@ module.exports = {
   },
   withRawQuery: (query, options) => {
     return sequelize.query(query, options);
+  },
+  getRawConnection: async () => {
+    const connection = await sequelize.connectionManager.getConnection();
+    connection.release = () => {
+      connectionManager.releaseConnection(connection)
+    }
+    return connection;
   },
   /**
    * Ensures database is setup and in sync with models
