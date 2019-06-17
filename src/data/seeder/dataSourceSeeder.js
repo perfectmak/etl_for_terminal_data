@@ -21,7 +21,7 @@ module.exports = {
    */
   seedFsData: async path => {
     log.info('Seeding fs data...');
-    const gs = new Storage();
+    const gs = new Storage({ autoRetry: false });
     const bucket = gs.bucket(GS_BUCKET);
     // download one tokens and one token-transfer file
     await bucket
