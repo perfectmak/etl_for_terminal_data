@@ -32,10 +32,11 @@ module.exports = sequelize => {
         type: Sequelize.STRING
       },
       blockTimestamp: {
-        type: Sequelize.DATE
+        // TODO: Change this to timestamp, but would require sanitizing inputs
+        type: Sequelize.STRING
       },
       blockNumber: {
-        type: Sequelize.BIGINT
+        type: Sequelize.STRING
       },
       blockHash: {
         type: Sequelize.CHAR(66),

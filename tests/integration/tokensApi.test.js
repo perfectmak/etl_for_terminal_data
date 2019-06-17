@@ -40,8 +40,6 @@ describe('GraphQL API', () => {
   before(async () => {
     testClient = createTestClient(server);
 
-    await db.sync({ force: true });
-
     await importer.seedData({
       seedSource: 'fs',
       seedSourcePath: process.cwd()

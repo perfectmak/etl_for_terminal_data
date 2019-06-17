@@ -9,7 +9,7 @@ switch (process.env.NODE_ENV) {
     loggerOptions.level = 'info'
     break;
   case 'test':
-    loggerOptions.level = 'error'
+    loggerOptions.level = 'info'
     break;
   case 'development':
   default:

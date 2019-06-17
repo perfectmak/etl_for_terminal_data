@@ -9,7 +9,7 @@ const { CHECK_DATA_SOURCE_INTERVAL_MS } = require('../constants/importer');
 const { getSourceReader } = require('./readers');
 const { getDataTypeWriter } = require('./writers');
 
-// import emits event 
+// import emits event
 let emitter = new EventEmitter();
 
 /**
@@ -18,11 +18,11 @@ let emitter = new EventEmitter();
  *
  * Currently the source content is stream to the database via a copy comment.
  * See `getSourceReader()` and `getDataTypeWriter()` for how these are implemented.
- * 
+ *
  * Currently no transformation is done on the data, but the input can be piped
  * through a transform stream for transformation. Of course depending on how heavy the transformation
  * it could also incur some extra time in the writing to the database.
- * 
+ *
  */
 const checkNewDataSource = async () => {
   const dataSource = await database.daos.dataSourcesDao.findOne({
@@ -32,7 +32,7 @@ const checkNewDataSource = async () => {
   if (!dataSource) {
     // no more new data source
     // TODO: perhaps revisit ERROR sources
-    emitter.emit('end', DataSource.Status.NEW)
+    emitter.emit('end', DataSource.Status.NEW);
     return;
   }
   dataSource.status = DataSource.Status.PROCESSING;
@@ -72,6 +72,7 @@ module.exports = Object.assign(emitter, {
     setTimeout(checkNewDataSource, CHECK_DATA_SOURCE_INTERVAL_MS);
   },
   seedData: async ({ seedSource, seedSourcePath }) => {
+    // forcing cleaning of database when seeding
     await database.sync({ force: true });
     switch (seedSource) {
       case 'fs':
