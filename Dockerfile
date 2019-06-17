@@ -11,4 +11,6 @@ COPY sample_data/ sample_data/
 COPY src/ src/
 COPY tests/ tests/
 
+EXPOSE 9090
+
 CMD ["npm", "run", "start"]

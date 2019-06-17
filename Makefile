@@ -1,7 +1,8 @@
 TESTCOMPOSEFILE= -f docker-compose.yml -f docker-compose.test.yml
+DEVCOMPOSEFILE= -f docker-compose.yml -f docker-compose.dev.yml
 
 start:
-	docker-compose up --build --force-recreate
+	docker-compose $(DEVCOMPOSEFILE) up --build --force-recreate
 
 stop:
 	docker-compose down
