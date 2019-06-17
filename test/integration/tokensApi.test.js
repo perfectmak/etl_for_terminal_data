@@ -1,3 +1,4 @@
+const appRoot = require('app-root-path');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const { createTestClient } = require('apollo-server-testing');
@@ -6,6 +7,7 @@ const { gql } = require('apollo-server');
 const server = require('../../src/server');
 const importer = require('../../src/importer');
 const db = require('../../src/data/db');
+const { Status, DataType } = require('../../src/data/dataSourcesDao');
 
 const expect = chai.expect;
 
@@ -40,10 +42,29 @@ describe('GraphQL API', () => {
   before(async () => {
     testClient = createTestClient(server);
 
-    await importer.seedData({
-      seedSource: 'fs',
-      seedSourcePath: process.cwd()
+    // not working on CI :(
+    // await importer.seedData({
+    //   seedSource: 'fs',
+    //   seedSourcePath: process.cwd()
+    // });
+
+    // fetching from cloud storage fails on CI (google or travis ci don't)
+    // so we would seed manually
+    const fixturesPath = appRoot + '/test/fixtures';
+    await db.sync({ force: true });
+    await db.daos.dataSourcesDao.create({
+      sourceType: 'fs',
+      source: `${fixturesPath}/tokens000000000000.csv`,
+      dataType: DataType.TOKENS,
+      status: Status.NEW
     });
+    await db.daos.dataSourcesDao.create({
+      sourceType: 'fs',
+      source: `${fixturesPath}/token-transfer000000000002.csv`,
+      dataType: DataType.TOKEN_TRANSFERS,
+      status: Status.NEW
+    });
+
     await importer.start();
     // wait for importer to be done
     await new Promise(resolve => {
