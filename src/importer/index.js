@@ -53,7 +53,6 @@ const checkNewDataSource = async () => {
   });
 
   outputStream.on('end', async () => {
-    console.timeEnd(dataSource.id);
     dataSource.status = DataSource.Status.DONE;
     await dataSource.save();
     log.info({ dataSource }, `Ended processing`);
@@ -62,7 +61,6 @@ const checkNewDataSource = async () => {
     setTimeout(checkNewDataSource, CHECK_DATA_SOURCE_INTERVAL_MS);
   });
 
-  console.time(dataSource.id);
   inputStream.pipe(outputStream);
 };
 

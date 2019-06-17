@@ -57,11 +57,7 @@ module.exports = {
     log.info('Seeding gs data...');
     const gs = new Storage();
     const [files] = await gs.bucket(GS_BUCKET).getFiles();
-    let count = 0;
     for (let file of files) {
-      if (count >= 5) {
-        break;
-      }
       const meta = file.metadata;
       if (!meta.name.endsWith('.csv')) {
         continue; // skip none csv files
