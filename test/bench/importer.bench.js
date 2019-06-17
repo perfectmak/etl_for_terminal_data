@@ -9,7 +9,7 @@ const importer = require('../../src/importer');
 const runBenchmark = async () => {
   await importer.seedData({
     seedSource: 'gs',
-    seedSize: 10
+    seedSize: process.env.SEED_SIZE || 100
   });
   console.log('Starting Ingesting now');
   let start = microtime.now();

@@ -28,10 +28,17 @@ Also I avoided using too much indexes and foreign key constraints, except for th
 The way the data sources table is setup, the importer can either open a stream
 directly to the file on GCS or open a stream to a file locally.
 
-Because of my bandwith constraint, I was unable to test both options for all files in the bucket (at least not on the same machine), so I ran a performance test on a subset of the files (100 and size ~10GB).
+Because of my bandwith constraint, I was unable to test both options for all files in the bucket (at least not on the same machine), so I ran a performance test on a subset of the files (100 and size ~9GB).
 
 Streaming the files directly from GCS was taking too long, so I cancelled it :(, 
-but Streaming the files from the local filesystem was faster and was able to ingest it at an average of ()
+but Streaming the files from the local filesystem was faster and was able to ingest it at an average of 3 mins.
+
+**Specs of the Machine Use**:
+Core i7 2.8 GHz,
+Memory: 16GB,
+SDD Storage.
+
+If you want to run the metric, you can run either `make run-benchmark-fs`, this would download the files to your local container and ingest from there or else run `make run-benchmark-gs` this would open a stream to read each file from directly from GS. 
 
 ## CI, Preferred Deployment Flow and Stack
 I would prefer to used (Docker) containers to deploy this service.
@@ -45,4 +52,9 @@ In production, orchestrating dependecies would still be based around containers,
 
 Also, because of the way the app is structured, the same image can be deployed to multiple servers, one would be the GraphlQL web service and many others can be deployed as background workers who sole job is to ingest data from the data source, this would also speed up ingesting.
 
+## Conclusion
+Node.js is great for IO and event driven operations, but not good for high intensity CPU operations and transformations. Also, it requires extra work to perform some parallel operations and with the way the event system works may also make things a little bit undeterministic. But for the GraphQL API, Node.js works fine, validating the request and fetching the data from the underlying database. An optimization might be to eager load the underlying token to a token_transfer.
+
+## License
+Education ✌🏽
 

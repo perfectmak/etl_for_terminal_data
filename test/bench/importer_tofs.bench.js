@@ -12,7 +12,7 @@ const runBenchmark = async () => {
     seedSource: 'gs',
     toFs: true,
     seedSourcePath: benchPath,
-    seedSize: 10
+    seedSize: process.env.SEED_SIZE || 100
   });
   console.log('Starting Ingesting now');
   let start = microtime.now();
