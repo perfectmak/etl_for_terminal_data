@@ -10,7 +10,8 @@
     "start": "node src/app.js",
     "start:server": "IMPORTER=off node src/app.js",
     "start:importer": "GRAPHQL_API=off node src/app.js",
-    "benchmark": "node test/bench/importer.bench.js",
+    "benchmark:gs": "node test/bench/importer.bench.js",
+    "benchmark:fs": "node test/bench/importer_tofs.bench.js",
     "test": "npm run test:unit && npm run test:integration",
     "test:integration": "NODE_ENV=test ./node_modules/.bin/mocha test/integration/**/*.test.js",
     "test:unit": "NODE_ENV=test ./node_modules/.bin/mocha test/unit/**/*.test.js"
