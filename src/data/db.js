@@ -2,18 +2,18 @@ const Sequelize = require('sequelize');
 const log = require('../common/logger');
 const makeTokensDao = require('./tokensDao');
 const makeTokenTransfersDao = require('./tokenTransfersDao');
+const makeDataSourcesDao = require('./dataSourcesDao');
+const { DEFAULT_PG_URL } = require('../constants/db');
 
-const sequelize = new Sequelize(
-  process.env.PG_URL || 'postgresql://postgres@postgres:5432/postgres',
-  {
-    dialect: 'postgresql',
-    logging: process.env.TRACE === 'true'
-  }
-);
+const sequelize = new Sequelize(process.env.PG_URL || DEFAULT_PG_URL, {
+  dialect: 'postgresql',
+  logging: process.env.TRACE === 'true'
+});
 
 const daos = {
   tokenTransfersDao: makeTokenTransfersDao(sequelize),
-  tokensDao: makeTokensDao(sequelize)
+  tokensDao: makeTokensDao(sequelize),
+  dataSourcesDao: makeDataSourcesDao(sequelize)
 };
 
 /// SETUP SEQUELIZE RELATIONSHIPS
@@ -37,9 +37,9 @@ module.exports = {
   /**
    * Ensures database is setup and in sync with models
    * only for development, doesn't do anything for production environment
-   * 
+   *
    */
-  sync: () => {
+  sync: (options) => {
     if (_isReady) {
       return Promise.resolve({});
     }
@@ -50,7 +50,7 @@ module.exports = {
       return Promise.resolve({});
     }
 
-    return sequelize.sync().then(args => {
+    return sequelize.sync(options).then(args => {
       _isReady = true;
       return args;
     });

@@ -7,6 +7,7 @@ COPY package-lock.json ./package-lock.json
 
 RUN npm install
 
+COPY sample_data/ sample_data/
 COPY src/ src/
 COPY tests/ tests/
 

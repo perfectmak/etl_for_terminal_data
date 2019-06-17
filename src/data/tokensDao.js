@@ -16,20 +16,20 @@ module.exports = sequelize => {
         allowNull: false
       },
       symbol: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true
       },
       decimals: {
         type: Sequelize.INTEGER,
-        default: 0
+        allowNull: true
       },
       totalSupply: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       }
     },
     {
