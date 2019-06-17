@@ -9,7 +9,6 @@ const { CHECK_DATA_SOURCE_INTERVAL_MS } = require('../constants/importer');
 const { getSourceReader } = require('./readers');
 const { getDataTypeWriter } = require('./writers');
 
-// import emits event
 let emitter = new EventEmitter();
 
 /**

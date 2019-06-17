@@ -18,6 +18,8 @@ const daos = {
 
 /// SETUP SEQUELIZE RELATIONSHIPS
 // tokens == has many ==> tokenTransfers
+// Note: Disabled this relation, since the referential integrity doesn't matter
+// just leaving this here for documentation purposes
 // daos.tokensDao.Transfers = daos.tokenTransfersDao.hasMany(daos.tokensDao);
 // daos.tokenTransfersDao.Token = daos.tokensDao.belongsTo(daos.tokenTransfersDao);
 /// END SETUP SEQUELIZE RELATIONSHIPS

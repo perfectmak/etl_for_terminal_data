@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
  * token_address,from_address,to_address,value,transaction_hash,log_index,block_timestamp,block_number,block_hash
  */
 module.exports = sequelize => {
-  return sequelize.define(
+  const Model = sequelize.define(
     'token_transfers',
     {
       tokenAddress: {
@@ -54,4 +54,7 @@ module.exports = sequelize => {
       }]
     }
   );
+  Model.removeAttribute('id'); // remove default primary key
+
+  return Model;
 };

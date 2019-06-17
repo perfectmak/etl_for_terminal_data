@@ -36,12 +36,12 @@ module.exports = {
     });
 
     await bucket
-      .file('assignment-data/token-transfers/token-transfer000000000006.csv')
-      .download({ destination: `${path}/token-transfer000000000006.csv` });
+      .file('assignment-data/token-transfers/token-transfer000000000002.csv')
+      .download({ destination: `${path}/token-transfer000000000002.csv` });
 
     await database.daos.dataSourcesDao.create({
       sourceType: 'fs',
-      source: `${path}/token-transfer000000000006.csv`,
+      source: `${path}/token-transfer000000000002.csv`,
       dataType: DataType.TOKEN_TRANSFERS,
       status: Status.NEW
     });

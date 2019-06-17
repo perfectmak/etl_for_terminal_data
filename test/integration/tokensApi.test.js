@@ -44,6 +44,7 @@ describe('GraphQL API', () => {
       seedSource: 'fs',
       seedSourcePath: process.cwd()
     });
+    await importer.start();
     // wait for importer to be done
     await new Promise(resolve => {
       importer.on('end', () => {
@@ -53,12 +54,12 @@ describe('GraphQL API', () => {
   });
 
   it('should index tokens correctly', async () => {
-    const res = testClient.query({ query: TOKENS_QUERY });
-    expect(res.data.tokens).not.to.be.empty();
+    const res = await testClient.query({ query: TOKENS_QUERY });
+    expect(res.data.tokens).to.not.be.empty;
   });
 
   it('should index transfers correctly', async () => {
-    const res = testClient.query({ query: TRANSFERS_QUERY });
-    expect(res.data.transfers).not.to.be.empty();
+    const res = await testClient.query({ query: TRANSFERS_QUERY });
+    expect(res.data.transfers).to.not.be.empty;
   });
 });
