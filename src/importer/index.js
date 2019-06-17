@@ -68,7 +68,7 @@ module.exports = Object.assign(emitter, {
   start: async () => {
     setTimeout(checkNewDataSource, CHECK_DATA_SOURCE_INTERVAL_MS);
   },
-  seedData: async ({ seedSource, seedSourcePath }) => {
+  seedData: async ({ seedSource, seedSourcePath, toFs, seedSize }) => {
     // forcing cleaning of database when seeding
     await database.sync({ force: true });
     switch (seedSource) {
@@ -76,7 +76,7 @@ module.exports = Object.assign(emitter, {
         await dataSourceSeeder.seedFsData(seedSourcePath);
         break;
       case 'gs':
-        await dataSourceSeeder.seedGsData();
+        await dataSourceSeeder.seedGsData(toFs, seedSourcePath, seedSize);
         break;
     }
   }

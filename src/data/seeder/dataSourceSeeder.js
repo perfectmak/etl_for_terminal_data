@@ -1,4 +1,5 @@
 const { Storage } = require('@google-cloud/storage');
+const last = require('lodash/last');
 const database = require('../db');
 const log = require('../../common/logger');
 const { Status, DataType } = require('../dataSourcesDao');
@@ -52,25 +53,59 @@ module.exports = {
    * Fetches all the files on the GS_Bucket
    * and submits their information
    *
+   * if toFs is true, it downloads the file
+   * and submits information as fs sourceType
+   *
+   *
    */
-  seedGsData: async () => {
+  seedGsData: async (toFs = false, fsPath = '', seedSize) => {
     log.info('Seeding gs data...');
     const gs = new Storage();
-    const [files] = await gs.bucket(GS_BUCKET).getFiles();
+    const bucket = gs.bucket(GS_BUCKET);
+    const [files] = await bucket.getFiles();
+
+    let count;
+    if (seedSize) {
+      count = 0;
+    }
+
     for (let file of files) {
       const meta = file.metadata;
       if (!meta.name.endsWith('.csv')) {
         continue; // skip none csv files
       }
 
-      // determine the datatype
+      if (seedSize && count > seedSize) {
+        break;
+      }
+
       try {
-        await database.daos.dataSourcesDao.create({
-          sourceType: 'gs',
-          source: `gs://${meta.bucket}/${meta.name}`,
-          dataType: getDataType(meta.name),
-          status: Status.NEW
-        });
+        if (toFs) {
+          const fileName = last(meta.name.split('/'))
+          await bucket
+            .file(meta.name)
+            .download({
+              destination: `${fsPath}/${fileName}`
+            });
+          log.info(`Done downloading ${fileName}`);
+          await database.daos.dataSourcesDao.create({
+            sourceType: 'fs',
+            source: `${fsPath}/${fileName}`,
+            dataType: getDataType(meta.name),
+            status: Status.NEW
+          });
+        } else {
+          await database.daos.dataSourcesDao.create({
+            sourceType: 'gs',
+            source: `gs://${meta.bucket}/${meta.name}`,
+            dataType: getDataType(meta.name),
+            status: Status.NEW
+          });
+        }
+
+        if (seedSize) {
+          count++;
+        }
       } catch (error) {
         log.error({ error }, 'Seeder error');
       }

@@ -1,14 +1,17 @@
 const microtime = require('microtime');
+const appRoot = require('app-root-path');
 const importer = require('../../src/importer');
 
+const benchPath = appRoot + '/test/bench';
 /**
- * NOTE: This benchmark doesn't compare multiple implementation for now (no time to do those)
- * It only records the time taken to index based on fetching file directly from gs the current COPY Stream implementation
- *
+ * Test how fast ingesting from the local filesytem would be.
+ * 
  */
 const runBenchmark = async () => {
   await importer.seedData({
     seedSource: 'gs',
+    toFs: true,
+    seedSourcePath: benchPath,
     seedSize: 10
   });
   console.log('Starting Ingesting now');
