@@ -17,7 +17,14 @@ if (process.env.GRAPHQL_API !== 'off') {
 }
 
 if (process.env.IMPORTER != 'off') {
-  importer.start().then(() => {
-    log.info(`Importer started`);
-  });
+  importer.start({
+      seedSource: process.env.SEED_SOURCE || 'gs',
+      seedSourcePath: process.env.SEED_SOURCE_PATH
+    })
+    .then(() => {
+      log.info(`Importer started`);
+    })
+    .catch(error => {
+      log.error({ error }, 'Error starting up importer');
+    });
 }

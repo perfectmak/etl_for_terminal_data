@@ -19,7 +19,8 @@ const Factory = sequelize => {
     // actual source/path to source
     source: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     // either tokens or token_transfers
     dataType: {
@@ -37,8 +38,8 @@ const Factory = sequelize => {
 Factory.Status = {
   NEW: 'new',
   PROCESSING: 'processing',
-  DONE: 'done'
-  // ERROR: 'error', // no longer required, check the logs for corresponding data_source id to know if any error occured
+  DONE: 'done',
+  ERROR: 'error',
 };
 
 Factory.DataType = {

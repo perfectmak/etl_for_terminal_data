@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { Storage } = require('@google-cloud/storage')
 const makeFsReader = require('./fsReader');
 const makeGsReader = require('./gsReader');
 
@@ -10,7 +11,7 @@ const makeGsReader = require('./gsReader');
  */
 const sourceReaders = {
   fs: makeFsReader(fs),
-  gs: makeGsReader()
+  gs: makeGsReader(new Storage())
 };
 
 class UnknownSourceReaderError extends Error {
