@@ -37,7 +37,7 @@ module.exports = {
   getRawConnection: async () => {
     const connection = await sequelize.connectionManager.getConnection();
     connection.release = () => {
-      connectionManager.releaseConnection(connection)
+      return sequelize.connectionManager.releaseConnection(connection)
     }
     return connection;
   },
