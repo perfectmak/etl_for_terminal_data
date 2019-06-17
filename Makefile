@@ -14,8 +14,8 @@ start-test:
 run-test:
 	docker-compose $(TESTCOMPOSEFILE) exec app npm test
 
-run-benchmark-fs:
+run-benchmark-fs: start-test
 	docker-compose $(TESTCOMPOSEFILE) exec app npm run benchmark:fs
 
-run-benchmark-gs:
+run-benchmark-gs: start-test
 	docker-compose $(TESTCOMPOSEFILE) exec app npm run benchmark:gs
