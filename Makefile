@@ -6,7 +6,9 @@ start:
 stop:
 	docker-compose down
 
-run-test:
+start-test:
 	docker-compose $(TESTCOMPOSEFILE) up --build -d
-	docker-compose ps
+	docker-compose ${TESTCOMPOSEFILE} ps
+
+run-test:
 	docker-compose $(TESTCOMPOSEFILE) exec app npm test
