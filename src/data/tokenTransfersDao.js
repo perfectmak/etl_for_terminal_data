@@ -20,12 +20,12 @@ module.exports = sequelize => {
         allowNull: false
       },
       value: {
-        type: Sequelize.CHAR(42),
+        type: Sequelize.STRING,
         allowNull: false
       },
       transactionHash: {
         type: Sequelize.CHAR(66),
-        primaryKey: true,
+        // primaryKey: true,
         allowNull: false
       },
       logIndex: {
@@ -43,7 +43,14 @@ module.exports = sequelize => {
       }
     },
     {
-      timestamps: false
+      timestamps: false,
+      indexes: [{
+        fields: ['transactionHash']
+      }, {
+        fields: ['fromAddress']
+      }, {
+        fields: ['toAddress']
+      }]
     }
   );
 };

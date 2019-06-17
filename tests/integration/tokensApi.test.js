@@ -1,26 +1,66 @@
 const chai = require('chai');
-const chaiHttp = require('chai-http');
 const chaiAsPromised = require('chai-as-promised');
+const { createTestClient } = require('apollo-server-testing');
+const { gql } = require('apollo-server');
 
-// const transactionFixtures = require('../fixtures/transactions.json');
 const server = require('../../src/server');
+const importer = require('../../src/importer');
 const db = require('../../src/data/db');
 
 const expect = chai.expect;
 
-chai.use(chaiHttp);
 chai.use(chaiAsPromised);
 
-describe('GET /opreturn/${opReturnData}', () => {
-  describe('when opReturnData exists', () => {
+const TOKENS_QUERY = gql`
+  query {
+    tokens {
+      address
+      name
+      totalSupply
+      symbol
+      decimals
+    }
+  }
+`;
 
-    beforeEach(async () => {
-      // clean repository
-      // await db.sequelize.sync({ force: true });
-    });
+const TRANSFERS_QUERY = gql`
+  query {
+    transfers {
+      toAddress
+      fromAddress
+      value
+      transactionHash
+    }
+  }
+`;
 
-    it('should return correct result', async () => {
-      expect(true).to.equal(true);
+describe('GraphQL API', () => {
+  let testClient;
+
+  before(async () => {
+    testClient = createTestClient(server);
+
+    await db.sync({ force: true });
+
+    await importer.seedData({
+      seedSource: 'fs',
+      seedSourcePath: process.cwd()
     });
+    // wait for importer to be done
+    await new Promise(resolve => {
+      importer.on('end', () => {
+        resolve();
+      });
+    });
+  });
+
+  it('should index tokens correctly', async () => {
+    const res = testClient.query({ query: TOKENS_QUERY });
+    expect(res.data.tokens).not.to.be.empty();
+  });
+
+  it('should index transfers correctly', async () => {
+    const res = testClient.query({ query: TRANSFERS_QUERY });
+    expect(res.data.transfers).not.to.be.empty();
   });
 });
