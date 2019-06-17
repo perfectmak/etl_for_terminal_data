@@ -1,3 +1,6 @@
+# Ingesting Terminals Public Data Task
+
+This code is able to ingest
 I tried using COPY for the data but there was some cleanup that was required on the data, this extra 
 cleanup lead to more time to be used.
 

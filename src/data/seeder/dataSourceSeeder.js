@@ -22,7 +22,7 @@ module.exports = {
   seedFsData: async path => {
     log.info('Seeding fs data...');
     const gs = new Storage();
-    let bucket = gs.bucket(GS_BUCKET);
+    const bucket = gs.bucket(GS_BUCKET);
     // download one tokens and one token-transfer file
     await bucket
       .file('assignment-data/tokens/tokens000000000000.csv')
@@ -35,7 +35,6 @@ module.exports = {
       status: Status.NEW
     });
 
-    bucket = gs.bucket(GS_BUCKET); // <= required because of gs error with token
     await bucket
       .file('assignment-data/token-transfers/token-transfer000000000006.csv')
       .download({ destination: `${path}/token-transfer000000000006.csv` });
